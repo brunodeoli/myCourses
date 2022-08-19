@@ -1,0 +1,33 @@
+/* CSS - CASCADING STYLE SHEET (Folhha de estilo em cascata) */
+
+/* seletor: {
+    propriedade: valor
+    cor: vermelho
+} => regra CSS */
+
+/* TIPOS DE SELETORES  */
+
+/* 1. seletor por elemento /tag */
+ header {
+     background-color: darkgreen;
+ }
+
+ /* 2. seletor por class */
+ .secaoTransacao{
+     background-color: blueviolet;
+ }
+
+ /* 3. seletor por id */
+ #detalhesConta_Usuario{
+     color: red;
+     background-color: lemonchiffon;
+     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+     font-size: 20px;
+ }
+
+ /* Dimensionamento */
+.detalhesConta{
+    width: 400px;
+    height: 300px;
+    background-color: rosybrown;
+}

@@ -1,0 +1,14 @@
+/* CSS - CASCADING STYLE SHEET (Folhha de estilo em cascata) */
+
+/* seletor: {
+    propriedade: valor
+    cor: vermelho
+} => regra CSS */
+
+/* Tipos de seletores
+1. seletor por elemento /tag
+ */
+
+ header {
+     background-color: darkgreen;
+ }
