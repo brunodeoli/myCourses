@@ -1,0 +1,113 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://sprites/background.png" type="Texture" id=1]
+[ext_resource path="res://sprites/ship.png" type="Texture" id=2]
+[ext_resource path="res://scripts/Ship.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Background.gd" type="Script" id=4]
+[ext_resource path="res://scenes/Asteroid.tscn" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Enemys.gd" type="Script" id=6]
+[ext_resource path="res://scripts/Lasers.gd" type="Script" id=7]
+[ext_resource path="res://scripts/Camera.gd" type="Script" id=8]
+
+[sub_resource type="Shader" id=3]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.4.4.stable's CanvasItemMaterial.
+
+shader_type canvas_item;
+
+uniform float vel = .5;
+uniform float des = 0f;
+uniform float time = 0f;
+
+void fragment(){ 
+	COLOR = texture(TEXTURE, UV + (vec2(0, -1f) * time * vel) + vec2(des,0));
+}
+"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
+shader_param/vel = 0.5
+shader_param/des = 0.0
+shader_param/time = 0.0
+
+[sub_resource type="Animation" id=1]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ship:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=2]
+resource_name = "fogo"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Ship:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 1, 0 ]
+}
+
+[node name="Game" type="Node2D"]
+
+[node name="Background" type="Sprite" parent="."]
+material = SubResource( 4 )
+position = Vector2( -2, -2 )
+scale = Vector2( 1.025, 1.01389 )
+texture = ExtResource( 1 )
+centered = false
+script = ExtResource( 4 )
+nave = NodePath("../Ship")
+
+[node name="Scene" type="Node2D" parent="."]
+script = ExtResource( 7 )
+nave = NodePath("../Ship")
+
+[node name="Enemys" type="Node2D" parent="Scene"]
+script = ExtResource( 6 )
+
+[node name="Asteroid" parent="Scene/Enemys" instance=ExtResource( 5 )]
+position = Vector2( 80, 33 )
+
+[node name="spawn_timer" type="Timer" parent="Scene/Enemys"]
+
+[node name="Ship" type="Node2D" parent="."]
+position = Vector2( 80, 250 )
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
+lasers = NodePath("../Scene")
+
+[node name="Ship" type="Sprite" parent="Ship"]
+position = Vector2( -1, 0 )
+texture = ExtResource( 2 )
+hframes = 2
+
+[node name="anim" type="AnimationPlayer" parent="Ship"]
+autoplay = "fogo"
+anims/RESET = SubResource( 1 )
+anims/fogo = SubResource( 2 )
+
+[node name="blaster" type="Position2D" parent="Ship"]
+position = Vector2( -1, -33 )
+
+[node name="Camera" type="Camera2D" parent="." groups=["camera"]]
+anchor_mode = 0
+current = true
+script = ExtResource( 8 )
+
+[connection signal="timeout" from="Scene/Enemys/spawn_timer" to="Scene/Enemys" method="_on_spawn_timer_timeout"]
