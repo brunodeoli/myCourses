@@ -1,0 +1,6 @@
+source 'https://rubygems.org'
+
+gem 'cpf_utils'
+gem 'faker'
+gem 'tty-spinner'
+gem "tty-progressbar"
